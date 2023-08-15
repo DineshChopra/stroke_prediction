@@ -1,7 +1,7 @@
 ## End to End Stroke Prediction
 
-. Create virtual environment:
+* Create virtual environment:
 	  `conda create -p venv python==3.8 -y`
 
-. Activate virtual environment:
+* Activate virtual environment:
 	  `conda activate venv`
