@@ -37,13 +37,22 @@ class ModelTrainer:
       )
 
       models = {
-        "Decision Tree": DecisionTreeClassifier(criterion='entropy'),
-        "Random Forest": RandomForestClassifier(n_estimators=150, criterion='entropy', random_state=123)
+        "Decision Tree": DecisionTreeClassifier(),
+        "Random Forest": RandomForestClassifier(random_state=123)
+      }
+      params = {
+        "Decision Tree": {
+          'criterion':['entropy'],
+        },
+        "Random Forest": {
+          'criterion':['entropy'],
+          'n_estimators': [100, 150, 200]
+        }
       }
 
       model_report: dict = evaluate_model(X_train=X_train, y_train=y_train, 
                                           X_test=X_test, y_test=y_test,
-                                          models=models)
+                                          models=models, param=params)
 
       # Find out Best model
       best_model_score = max(sorted(model_report.values()))
