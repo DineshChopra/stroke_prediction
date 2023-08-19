@@ -10,6 +10,7 @@ from dataclasses import dataclass
 
 from src.components.data_transformation import DataTransformationConfig, DataTransformation
 from src.components.model_trainer import ModelTrainerConfig, ModelTrainer
+from src.utils import resample_unbalance_data, data_cleaning
 
 @dataclass
 class DataIngestionConfig:
@@ -30,8 +31,13 @@ class DataIngestion:
       print('Artifact dir : ', os.path.dirname(self.ingestion_config.train_data_path))
       os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
 
-      df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
+      # Clean Data
+      df = data_cleaning(df)
+
+      # Resample unbalance data
+      df = resample_unbalance_data(df)
       
+      df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
       logging.info("Train Test split started")
       train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
       train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
