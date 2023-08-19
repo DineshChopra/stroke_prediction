@@ -4,7 +4,9 @@
 	  `conda create -p venv python==3.8 -y`
 
 * Activate virtual environment:
-	  `conda activate venv`
+	  `conda activate venv/`
+* Install requirements:
+	`pip install -r requirements.txt`
 
 ## Problem Statement: [Kaggle DataSet](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset)
 
