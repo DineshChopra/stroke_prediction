@@ -112,7 +112,7 @@ jobs:
           IMAGE_TAG: latest
         run: |
          echo "Docker run start ---------------------------------- "
-         docker run  -p 8080:8080 --ipc="host" --name=container_name $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+         docker run -d -p 8080:8080 --ipc="host" --name=container_name $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
          echo "Docker run FIINISH --------------------------------- "
       - name: Clean previous images and containers
         run: |
