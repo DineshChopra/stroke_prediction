@@ -83,9 +83,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Remove existing docker image
-        run: |
-          docker rmi -f $(docker images -a -q)
+      # - name: Remove existing docker image
+      #   run: |
+      #     docker rmi -f $(docker images -a -q)
 
       - name: Login to Amazon ECR
         id: login-ecr
