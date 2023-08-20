@@ -101,9 +101,9 @@ jobs:
          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
          echo "Docker pull finiisheddddd --------------"
          
-      - name: Stop and remove  container if running
-        run: |
-         docker ps -q --filter "name=stroke_prediction" | grep -q . && docker stop stroke_prediction && docker rm -fv stroke_prediction
+      # - name: Stop and remove  container if running
+      #   run: |
+      #    docker ps -q --filter "name=stroke_prediction" | grep -q . && docker stop stroke_prediction && docker rm -fv stroke_prediction
        
       - name: Run Docker Image to serve users
         env:
@@ -112,7 +112,7 @@ jobs:
           IMAGE_TAG: latest
         run: |
          echo "Docker run start ---------------------------------- "
-         docker run -d -p 8080:8080 --ipc="host" --name=container_name $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+         docker run  -p 8080:8080 --ipc="host" --name=container_name $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
          echo "Docker run FIINISH --------------------------------- "
       - name: Clean previous images and containers
         run: |
