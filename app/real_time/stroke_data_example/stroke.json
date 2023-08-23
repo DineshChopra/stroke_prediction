@@ -1,0 +1,12 @@
+{
+  "gender": "male",
+  "age": 80,
+  "hypertension": 1,
+  "heart_disease": 1,
+  "ever_married": "Yes",
+  "work_type": "Private",
+  "Residence_type": "Rural",
+  "avg_glucose_level": 250,
+  "bmi": 25,
+  "smoking_status": "smokes"
+}
