@@ -5,9 +5,6 @@ import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from src.utils import load_object
-from src.pipeline.predict_pipeline import CustomData
-
 app = FastAPI(title="Stroke Prediction App")
 
 # Represents a particular stroke (or datapoint)
@@ -44,33 +41,36 @@ class Stroke(BaseModel):
       raise CustomException(e, sys)
 
 
-preprocessor_path = 'artifacts/preprocessor.pkl'
-model_path = 'artifacts/model.pkl'
+preprocessor_path = 'app/artifacts/preprocessor.pkl'
+model_path = 'app/artifacts/model.pkl'
+
+def load_object(file_path):
+  # with open(file_path, 'rb') as file_obj:
+  with open(file_path, "rb") as file_obj:
+    return pickle.load(file_obj)
 
 @app.on_event("startup")
 def load_preprocessor_and_classifier():
-    # Load classifier from pickle file
-    global preprocessor
-    global model
+  # Load classifier from pickle file
+  global preprocessor
+  global model
 
-    preprocessor = load_object(preprocessor_path)
-    model = load_object(model_path)
+  preprocessor = load_object(preprocessor_path)
+  model = load_object(model_path)
 
 
 @app.get("/")
 def home():
-    return "Congratulations! Your API is working as expected. Now head over to http://localhost:80/docs"
+    return "Congratulations! Your API is working as expected. Now head over to http://127.0.0.1:8000/docs "
 
 
 @app.post("/predict")
 def predict(stroke: Stroke):
-  print("stroke -- ", stroke)
-  
+  # Convert stroke object into Pandas DataFrame
   pred_df = stroke.get_stroke_as_data_frame()
-  print('pred_df ---->>>>>> --- ', pred_df)
-
+  # Preprocess Data
   data_scaled = preprocessor.transform(pred_df)
-  print('data scaled -- ', data_scaled)
+  # Get Prediction
   predictions = model.predict(data_scaled)
   return {"Prediction": predictions[0]}
 
