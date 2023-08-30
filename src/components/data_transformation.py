@@ -15,8 +15,6 @@ from src.logger import logging
 from src.utils import save_object
 
 
-
-
 @dataclass
 class DataTransformationConfig:
   preprocessor_ob_file_path = os.path.join('artifacts', 'preprocessor.pkl')
@@ -93,16 +91,16 @@ class DataTransformation:
       test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
       logging.info(f"Saved preprocessing object.")
-
+      file_path = self.data_transformation_config.preprocessor_ob_file_path
       save_object(
-        file_path=self.data_transformation_config.preprocessor_ob_file_path,
+        file_path=file_path,
         obj=preprocessing_obj
       )
 
       return (
         train_arr,
         test_arr,
-        self.data_transformation_config.preprocessor_ob_file_path
+        file_path
       )
 
     except Exception as e:

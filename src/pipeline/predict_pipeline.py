@@ -5,6 +5,11 @@ import pandas as pd
 from src.exception import CustomException
 from src.utils import load_object
 
+import mlflow
+from mlflow.tracking import MlflowClient
+
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
+
 class PredictPipeline:
 
   def __init__(self):
@@ -12,10 +17,21 @@ class PredictPipeline:
 
   def predict(self, features):
     try:
-      model_path = os.path.join("artifacts","model.pkl")
-      preprocessor_path = os.path.join("artifacts","preprocessor.pkl")
+      # model_path = os.path.join("artifacts","model.pkl")
+      # preprocessor_path = os.path.join("artifacts","preprocessor.pkl")
+      client = MlflowClient()
+      best_performance_model = client.search_runs(
+        experiment_ids=1,
+        filter_string="metrics.accuracy > 0.70",
+        order_by=["metrics.accuracy DESC"],
+      )[0]
+      model_artifact_uri = best_performance_model.info.artifact_uri
+      preprocessor_path = f"{model_artifact_uri}/preprocessor/preprocessor.pkl"
       preprocessor = load_object(preprocessor_path)
-      model = load_object(model_path)
+
+      model_path = f"{model_artifact_uri}/model"
+      model = mlflow.pyfunc.load_model(model_path)
+
       print('features -- ', features)
       data_scaled = preprocessor.transform(features)
       print('data scaled -- ', data_scaled)

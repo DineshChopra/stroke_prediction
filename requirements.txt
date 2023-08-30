@@ -7,4 +7,5 @@ Flask
 plotly
 fastapi
 uvicorn
+mlflow
 # -e .
